@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "rootDir": "./api",
+    "noEmit": true,
+    "strict": true,
+    "module": "CommonJS",
+    "target": "ES2021",
+    "isolatedModules": true
+  },
+  "include": ["api/**/*"],
+  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
+}

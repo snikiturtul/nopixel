@@ -1,0 +1,9 @@
+node_modules
+/public/build/
+.env
+.DS_Store
+.vercel
+**/*.lock
+.vscode
+.pass
+loader.js

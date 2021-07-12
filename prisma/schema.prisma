@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  id           String       @id @db.Uuid
+  username     String       @unique @db.VarChar(25)
+  display_name String       @unique @db.VarChar(25)
+  platform     Int          @default(1) @db.SmallInt
+  platform_id  String?      @unique @db.VarChar(128)
+  auth         auth?
+  blacklist    blacklist[]
+  characters   characters[]
+  moderators   moderators[]
+}
+
+model auth {
+  id         String   @id @db.Uuid
+  account_id String   @unique @db.Uuid
+  allowed    Boolean  @default(true)
+  admin      Boolean  @default(false)
+  accounts   accounts @relation(fields: [account_id], references: [id])
+}
+
+model blacklist {
+  id         String   @id @db.Uuid
+  account_id String   @db.Uuid
+  accounts   accounts @relation(fields: [account_id], references: [id])
+}
+
+model moderators {
+  id         String   @id @db.Uuid
+  account_id String   @db.Uuid
+  blacklist  Boolean  @default(false)
+  shoutout   Boolean  @default(false)
+  accounts   accounts @relation(fields: [account_id], references: [id])
+}
+
+model characters {
+  id             String   @id @db.Uuid
+  name           String   @unique @db.VarChar(255)
+  account_id     String   @db.Uuid
+  search_phrases String[] @unique
+  accounts       accounts @relation(fields: [account_id], references: [id])
+}
